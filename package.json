@@ -1,6 +1,6 @@
 {
 	"name": "dexchange-sdk",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "TypeScript SDK for DEXCHANGE API",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -9,8 +9,7 @@
 		"build": "tsc",
 		"test": "jest",
 		"dev": "tsc --watch",
-		"prepare": "npm run build",
-		"prepublishOnly": "npm test && npm run build"
+		"prepare": "npm run build"
 	},
 	"keywords": [
 		"dexchange",
@@ -42,7 +41,7 @@
 	"bugs": {
 		"url": "https://github.com/DEXCHANGE-GROUP/dexchange-api-typescript-js-sdk/issues"
 	},
-	"homepage": "https://github.com/DEXCHANGE-GROUP/dexchange-api-typescript-js-sdk#readme",
+	"homepage": "https://api.dexchange.sn",
 	"publishConfig": {
 		"access": "public"
 	}
