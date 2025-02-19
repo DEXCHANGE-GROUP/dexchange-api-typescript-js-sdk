@@ -15,11 +15,12 @@ export class DexchangeError extends Error {
 export function handleApiError(error: AxiosError<ErrorResponse>): never {
   if (error.response) {
     const errorData = error.response.data;
-    throw new DexchangeError(
-      errorData.message,
+    const dexError = new DexchangeError(
+      errorData.message || 'An error occurred',
       errorData.error,
       error.response.data
     );
+    throw dexError;
   }
   
   if (error.request) {
