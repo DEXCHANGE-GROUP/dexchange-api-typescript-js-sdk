@@ -1,8 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 import axiosRetry from 'axios-retry';
+import crypto from 'crypto';
+import { Config } from './types';
 import { TransactionService } from './services/transaction.service';
 import { ServicesService } from './services/services.service';
-import { Config } from './types';
 
 export * from './types';
 
@@ -20,7 +21,7 @@ export class DexchangeClient {
       },
     });
 
-    // Configure retries
+    // Configure retry behavior
     axiosRetry(this.client, {
       retries: 3,
       retryDelay: (retryCount) => {
@@ -35,6 +36,18 @@ export class DexchangeClient {
       },
     });
 
+    // Add error interceptor
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response) {
+          const { data } = error.response;
+          throw new Error(data.message || 'Une erreur est survenue');
+        }
+        throw error;
+      }
+    );
+
     this.transaction = new TransactionService(this.client);
     this.services = new ServicesService(this.client);
   }
@@ -44,7 +57,6 @@ export class DexchangeClient {
    */
   static webhook = {
     verifySignature(signature: string, payload: string, secret: string): boolean {
-      const crypto = require('crypto');
       const hmac = crypto.createHmac('sha256', secret);
       const expectedSignature = hmac.update(payload).digest('hex');
       return signature === expectedSignature;

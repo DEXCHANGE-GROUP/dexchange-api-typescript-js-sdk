@@ -3,4 +3,4 @@ export interface DexchangeConfig {
   baseURL?: string;
 }
 
-export const DEFAULT_BASE_URL = 'https://api-m.dexchange.sn/api/v1';
+export const DEFAULT_BASE_URL = 'https://api-m.dexchange.sn';

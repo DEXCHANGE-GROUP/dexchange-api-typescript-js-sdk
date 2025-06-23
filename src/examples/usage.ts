@@ -1,17 +1,17 @@
 import { DexchangeClient } from '../index';
 
-// Initialize the SDK
+// Initialize the client
 const client = new DexchangeClient({
-  apiKey: 'YOUR_API_KEY',
+  apiKey: 'VOTRE_CLE_API',
   // Optional: override base URL
   // baseUrl: 'https://api-m.dexchange.sn'
 });
 
 // Initialize a transaction
-async function initTransaction() {
+export async function initTransaction() {
   try {
     const response = await client.transaction.init({
-      externalTransactionId: 'ORDER-123',
+      externalTransactionId: `ORDER-${Date.now()}`,
       serviceCode: 'OM_SN',
       amount: 1000,
       number: '771234567',
@@ -26,10 +26,10 @@ async function initTransaction() {
 }
 
 // Generate a merchant payment link
-async function createPaymentLink() {
+export async function createPaymentLink() {
   try {
     const response = await client.transaction.createMerchantPaymentLink({
-      externalTransactionId: 'ORDER-123',
+      externalTransactionId: `ORDER-${Date.now()}`,
       ItemName: 'Premium T-shirt',
       ItemPrice: 5000,
       ClientName: 'John Doe',
@@ -46,7 +46,7 @@ async function createPaymentLink() {
 }
 
 // Get account balance
-async function getBalance() {
+export async function getBalance() {
   try {
     const response = await client.services.getBalance();
     console.log(response);
@@ -56,7 +56,7 @@ async function getBalance() {
 }
 
 // Get available services
-async function getServices() {
+export async function getServices() {
   try {
     const response = await client.services.getServices();
     console.log(response);
@@ -66,7 +66,7 @@ async function getServices() {
 }
 
 // Example webhook handler
-function handleWebhook(signature: string, payload: string, secret: string) {
+export function handleWebhook(signature: string, payload: string, secret: string) {
   const isValid = DexchangeClient.webhook.verifySignature(signature, payload, secret);
   if (isValid) {
     const data = JSON.parse(payload);
@@ -74,4 +74,14 @@ function handleWebhook(signature: string, payload: string, secret: string) {
   } else {
     console.error('Invalid webhook signature');
   }
+}
+
+// Run examples
+if (require.main === module) {
+  console.log('Running examples...');
+  Promise.all([initTransaction(), createPaymentLink(), getBalance(), getServices()])
+    .then(() => {
+      console.log('All examples completed');
+    })
+    .catch(console.error);
 }

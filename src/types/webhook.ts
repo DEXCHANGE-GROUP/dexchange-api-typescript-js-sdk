@@ -1,4 +1,4 @@
-export interface WebhookPayload {
+export interface WebhookEvent {
   id: string;
   externalTransactionId: string;
   transactionType: string;
