@@ -20,6 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DexchangeClient = void 0;
 const axios_1 = __importDefault(require("axios"));
 const axios_retry_1 = __importDefault(require("axios-retry"));
+const crypto_1 = __importDefault(require("crypto"));
 const transaction_service_1 = require("./services/transaction.service");
 const services_service_1 = require("./services/services.service");
 __exportStar(require("./types"), exports);
@@ -32,7 +33,7 @@ class DexchangeClient {
                 Authorization: `Bearer ${config.apiKey}`,
             },
         });
-        // Configure retries
+        // Configure retry behavior
         (0, axios_retry_1.default)(this.client, {
             retries: 3,
             retryDelay: (retryCount) => {
@@ -45,6 +46,14 @@ class DexchangeClient {
                     (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) ? error.response.status >= 500 : false));
             },
         });
+        // Add error interceptor
+        this.client.interceptors.response.use((response) => response, (error) => {
+            if (error.response) {
+                const { data } = error.response;
+                throw new Error(data.message || 'Une erreur est survenue');
+            }
+            throw error;
+        });
         this.transaction = new transaction_service_1.TransactionService(this.client);
         this.services = new services_service_1.ServicesService(this.client);
     }
@@ -55,8 +64,7 @@ exports.DexchangeClient = DexchangeClient;
  */
 DexchangeClient.webhook = {
     verifySignature(signature, payload, secret) {
-        const crypto = require('crypto');
-        const hmac = crypto.createHmac('sha256', secret);
+        const hmac = crypto_1.default.createHmac('sha256', secret);
         const expectedSignature = hmac.update(payload).digest('hex');
         return signature === expectedSignature;
     },

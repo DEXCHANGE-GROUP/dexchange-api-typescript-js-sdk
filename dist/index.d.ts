@@ -1,6 +1,6 @@
+import { Config } from './types';
 import { TransactionService } from './services/transaction.service';
 import { ServicesService } from './services/services.service';
-import { Config } from './types';
 export * from './types';
 export declare class DexchangeClient {
     private readonly client;

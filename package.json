@@ -1,6 +1,6 @@
 {
-  "name": "@dexchange/sdk",
-  "version": "1.0.4",
+  "name": "dexchange-sdk",
+  "version": "1.0.3",
   "description": "SDK officiel pour intégrer DEXCHANGE-API dans vos applications JavaScript/TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
