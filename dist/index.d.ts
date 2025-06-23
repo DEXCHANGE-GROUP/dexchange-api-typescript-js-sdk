@@ -1,13 +1,16 @@
-import { DexchangeConfig } from './types';
-import { TransactionService } from './services/transaction';
-import { BalanceService } from './services/balance';
-import { DexchangeError } from './utils/error-handler';
+import { TransactionService } from './services/transaction.service';
+import { ServicesService } from './services/services.service';
+import { Config } from './types';
 export * from './types';
-export * from './utils/error-handler';
-export declare class DexchangeSDK {
-    transaction: TransactionService;
-    balance: BalanceService;
-    static DexchangeError: typeof DexchangeError;
-    constructor(config: DexchangeConfig);
+export declare class DexchangeClient {
+    private readonly client;
+    readonly transaction: TransactionService;
+    readonly services: ServicesService;
+    constructor(config: Config);
+    /**
+     * Verify webhook signature
+     */
+    static webhook: {
+        verifySignature(signature: string, payload: string, secret: string): boolean;
+    };
 }
-export default DexchangeSDK;

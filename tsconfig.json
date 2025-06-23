@@ -7,8 +7,16 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+    },
+    "lib": ["es2018", "dom"],
+    "types": ["node", "jest"],
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/__tests__/*", "**/__mocks__/*"],
 }

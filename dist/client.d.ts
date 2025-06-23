@@ -1,7 +1,11 @@
-import { DexchangeConfig } from './config';
+import { Config } from './types';
+import { TransactionService } from './services/transaction.service';
+import { ServicesService } from './services/services.service';
 export declare class DexchangeClient {
-    private client;
-    constructor(config: DexchangeConfig);
+    private readonly client;
+    readonly transaction: TransactionService;
+    readonly services: ServicesService;
+    constructor(config: Config);
     protected get<T>(url: string): Promise<T>;
     protected post<T>(url: string, data: any): Promise<T>;
 }
